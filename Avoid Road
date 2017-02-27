@@ -1,0 +1,83 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define MP          make_pair
+#define PB          push_back
+#define LL          long long
+#define MAX         1000005
+#define debug(a)    cout<<a<<"\n"
+#define sd(a)       scanf("%d",&a)
+#define sc(a)       scanf("%c",&a)
+#define ss(a)       scanf("%s",&a)
+#define mx(a,b,c)   max(a,max(b,c))
+#define mn(a,b,c)   min(a,min(b,c))
+#define pred(a)     printf("%0.6lf",a)
+#define rep(i,x,b)  for(int i=x;i<b;i++)
+#define rf          freopen("input1.in", "r", stdin)
+#define wf          freopen("out.out", "w", stdout)
+#define fast()      ios_base::sync_with_stdio(0)
+#define chloop(i,j) cout<<"i:"<<i<<" j:"<<j<<"\n"
+#define pii pair<LL,LL>
+
+const double eps=1e-9;
+const double pi =acos(-1);
+struct sx{
+int ind;
+int val;
+};
+sx s[200005];
+bool cmp(const sx&a, const sx&b){
+
+if(a.val==b.val) return a.ind<b.ind;
+else return a.val<b.val;
+}
+LL t1,t2,t3,t4,t5;
+LL lcm(LL x, LL y) { return x*1LL*y/__gcd(x, y);}
+LL int modpow(LL a,LL x, LL mod){
+	int r=1;
+	while(x>0)
+    if (x&1){ r=(r*a)%mod; --x;}
+    else {a=(a*a)%mod;x>>=1;}
+	return r%mod ;
+}
+map<pair<pii,pii>,bool>mp;
+int main()
+{
+     ios::sync_with_stdio(0);
+
+    LL x,y;
+    cin>>x>>y;
+
+    LL n;
+    cin>>n;
+    LL a,b,c,d;
+    for(LL i=0;i<n;i++)
+    {
+        cin>>a>>b>>c>>d;
+        if(a+b==c+d+1)
+            mp[MP(MP(a,b),MP(c,d))]=1;
+        else
+            mp[MP(MP(c,d),MP(a,b))]=1;
+    }
+
+    LL dp[x+1][y+1];
+    for(LL i=0;i<=x;i++) for(LL j=0;j<=y;j++) dp[i][j]=0;
+    dp[0][0]=1;
+    for(LL i=0;i<=x;i++)
+    {
+        for(LL j=0;j<=y;j++)
+        {
+            pair<pii,pii> ver=MP(MP(i,j),MP(i,j-1));
+            if(j>=1&&!mp[ver])
+                dp[i][j]+=dp[i][j-1];
+            pair<pii,pii> hor=MP(MP(i,j),MP(i-1,j));
+            if(i>=1&&!mp[hor])
+                dp[i][j]+=dp[i-1][j];
+        }
+    }
+
+    cout<<dp[x][y]<<endl;
+     return 0;
+    }
+
+
+
